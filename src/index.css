@@ -1,40 +1,75 @@
 @import "tailwindcss";
 
-/* Brand palette: Forest Green #183D2B, Warm Cream #F5F0E6, Muted Sage #A8B5A0, Muted Gold #C5A66A */
+/* Monochrome theme: neutrals flip between dark and light with the system setting */
 @theme {
-  --color-white: #F5F0E6;
+  --color-white: var(--n-50);
+  --color-neutral-50: var(--n-50);
+  --color-neutral-100: var(--n-100);
+  --color-neutral-200: var(--n-200);
+  --color-neutral-300: var(--n-300);
+  --color-neutral-400: var(--n-400);
+  --color-neutral-500: var(--n-500);
+  --color-neutral-600: var(--n-600);
+  --color-neutral-700: var(--n-700);
+  --color-neutral-800: var(--n-800);
+  --color-neutral-900: var(--n-900);
+  --color-neutral-950: var(--n-950);
+  --color-amber-50: var(--n-950);
+  --color-amber-100: var(--n-900);
+  --color-amber-200: var(--n-800);
+  --color-amber-300: var(--n-100);
+  --color-amber-400: var(--n-200);
+  --color-amber-500: var(--n-300);
+  --color-amber-600: var(--n-400);
+  --color-amber-700: var(--n-500);
+  --color-amber-800: var(--n-800);
+  --color-amber-900: var(--n-900);
+  --color-amber-950: var(--n-950);
+  --color-emerald-300: var(--n-200);
+  --color-emerald-400: var(--n-300);
+  --color-emerald-500: var(--n-400);
+  --color-emerald-600: var(--n-500);
+  --color-rose-300: var(--n-200);
+  --color-rose-400: var(--n-300);
+  --color-rose-500: var(--n-400);
+  --color-blue-300: var(--n-200);
+  --color-blue-400: var(--n-300);
+  --color-blue-500: var(--n-400);
+  --color-purple-300: var(--n-200);
+  --color-purple-400: var(--n-300);
+  --color-purple-500: var(--n-400);
+}
 
-  /* Neutrals: warm cream → muted sage → forest green */
-  --color-neutral-50: #FBF8F2;
-  --color-neutral-100: #F5F0E6;
-  --color-neutral-200: #E4E2D5;
-  --color-neutral-300: #C8CFC0;
-  --color-neutral-400: #A8B5A0;
-  --color-neutral-500: #8A9B84;
-  --color-neutral-600: #637A69;
-  --color-neutral-700: #3B6049;
-  --color-neutral-800: #2A5039;
-  --color-neutral-900: #183D2B;
-  --color-neutral-950: #112F21;
+:root {
+  color-scheme: dark;
+  --n-50: #fafafa;
+  --n-100: #f5f5f5;
+  --n-200: #e5e5e5;
+  --n-300: #d4d4d4;
+  --n-400: #a3a3a3;
+  --n-500: #737373;
+  --n-600: #525252;
+  --n-700: #404040;
+  --n-800: #262626;
+  --n-900: #171717;
+  --n-950: #0a0a0a;
+}
 
-  /* Accent: muted gold */
-  --color-amber-50: #FAF6EC;
-  --color-amber-100: #F2E8D3;
-  --color-amber-200: #E6D5B0;
-  --color-amber-300: #D6BE8C;
-  --color-amber-400: #C5A66A;
-  --color-amber-500: #B39557;
-  --color-amber-600: #967A45;
-  --color-amber-700: #775F36;
-  --color-amber-800: #5A4829;
-  --color-amber-900: #3F331E;
-  --color-amber-950: #2A2215;
-
-  /* Success: muted sage */
-  --color-emerald-300: #C8D2C1;
-  --color-emerald-400: #A8B5A0;
-  --color-emerald-500: #8FA087;
-  --color-emerald-600: #74876D;
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --n-50: #0a0a0a;
+    --n-100: #171717;
+    --n-200: #262626;
+    --n-300: #404040;
+    --n-400: #525252;
+    --n-500: #737373;
+    --n-600: #a3a3a3;
+    --n-700: #d4d4d4;
+    --n-800: #e5e5e5;
+    --n-900: #f5f5f5;
+    --n-950: #fafafa;
+  }
 }
 
 @layer base {
@@ -53,12 +88,12 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(245, 240, 230, 0.04);
+  background: color-mix(in srgb, var(--n-50) 4%, transparent);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(168, 181, 160, 0.3);
+  background: color-mix(in srgb, var(--n-50) 16%, transparent);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(197, 166, 106, 0.6);
+  background: color-mix(in srgb, var(--n-50) 28%, transparent);
 }

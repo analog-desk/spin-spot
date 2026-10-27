@@ -90,8 +90,7 @@ export const FoodHierarchyView: React.FC<FoodHierarchyViewProps> = ({
                   <div className="min-w-0 pr-3">
                     <div className="flex items-center gap-2">
                       <span
-                        className="w-2.5 h-2.5 rounded-full shrink-0"
-                        style={{ backgroundColor: item.color }}
+                        className="w-2.5 h-2.5 rounded-full shrink-0 bg-neutral-400"
                       />
                       <span className={`text-sm font-bold truncate ${isSelected ? 'text-amber-400' : 'text-white'}`}>
                         {item.name}
@@ -131,8 +130,7 @@ export const FoodHierarchyView: React.FC<FoodHierarchyViewProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span
-                  className="w-3.5 h-3.5 rounded-full"
-                  style={{ backgroundColor: selectedItem.color }}
+                  className="w-3.5 h-3.5 rounded-full bg-neutral-400"
                 />
                 <h3 className="text-xl font-bold text-white">
                   {selectedItem.name}

@@ -121,6 +121,15 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
     }
   }, [wheelMode, topThreeList.length, refreshTopThree]);
 
+  // Redraw the wheel when the system switches between light and dark
+  const [colorScheme, setColorScheme] = useState(() => window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-color-scheme: light)');
+    const onChange = () => setColorScheme(mq.matches ? 'light' : 'dark');
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
   // Render high-contrast crisp Canvas Wheel
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -129,6 +138,8 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const css = getComputedStyle(document.documentElement);
+    const c = (k: number) => css.getPropertyValue(`--n-${k}`).trim();
     const dpr = window.devicePixelRatio || 1;
     const size = 500;
     canvas.width = size * dpr;
@@ -144,20 +155,20 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
     ctx.clearRect(0, 0, size, size);
 
     if (numSlices === 0) {
-      ctx.fillStyle = '#112F21';
+      ctx.fillStyle = c(950);
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = '#2A5039';
+      ctx.strokeStyle = c(800);
       ctx.lineWidth = 4;
       ctx.stroke();
 
-      ctx.fillStyle = '#C5A66A';
+      ctx.fillStyle = c(200);
       ctx.font = '700 15px Plus Jakarta Sans, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('No restaurants match this filter', centerX, centerY - 10);
       ctx.font = '400 12px Plus Jakarta Sans, sans-serif';
-      ctx.fillStyle = '#A8B5A0';
+      ctx.fillStyle = c(400);
       ctx.fillText('Reset cuisine filter or override 5-day exclusion', centerX, centerY + 14);
       return;
     }
@@ -182,15 +193,15 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
       const isItemFatigued = fatigueStatuses.get(key)?.isFatigued;
 
       if (isItemFatigued) {
-        ctx.fillStyle = isAlt ? '#2C3A30' : '#24312A';
+        ctx.fillStyle = isAlt ? c(900) : c(950);
       } else {
         // Subtle deep alternating surfaces with slight saturation for luxury feel
-        ctx.fillStyle = isAlt ? '#1F4A34' : '#183D2B';
+        ctx.fillStyle = isAlt ? c(800) : c(900);
       }
       ctx.fill();
 
       // Hairline wedge border
-      ctx.strokeStyle = '#3B6049';
+      ctx.strokeStyle = c(700);
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
@@ -209,7 +220,7 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
         ctx.font = '600 10.5px Plus Jakarta Sans, sans-serif';
       }
 
-      ctx.fillStyle = isItemFatigued ? '#637A69' : '#F5F0E6';
+      ctx.fillStyle = isItemFatigued ? c(600) : c(50);
 
       const maxTextWidth = radius - 55;
       let label = item.name;
@@ -225,7 +236,7 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
       // Category color pip
       ctx.beginPath();
       ctx.arc(radius - 10, 0, 4, 0, Math.PI * 2);
-      ctx.fillStyle = isItemFatigued ? '#ef4444' : (item.color || '#C5A66A');
+      ctx.fillStyle = isItemFatigued ? '#ef4444' : c(400);
       ctx.fill();
 
       ctx.restore();
@@ -234,29 +245,29 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
     // Outer wheel border & gold rim
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = '#C5A66A';
+    ctx.strokeStyle = c(200);
     ctx.lineWidth = 5;
     ctx.stroke();
 
     // Center metallic hub
     ctx.beginPath();
     ctx.arc(centerX, centerY, 42, 0, Math.PI * 2);
-    ctx.fillStyle = '#112F21';
+    ctx.fillStyle = c(950);
     ctx.fill();
-    ctx.strokeStyle = '#C5A66A';
+    ctx.strokeStyle = c(200);
     ctx.lineWidth = 3.5;
     ctx.stroke();
 
-    ctx.fillStyle = '#F5F0E6';
+    ctx.fillStyle = c(50);
     ctx.font = '800 12px Plus Jakarta Sans, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText('SPIN', centerX, centerY - 1);
 
-    ctx.fillStyle = '#C5A66A';
+    ctx.fillStyle = c(200);
     ctx.font = 'bold 9px JetBrains Mono, monospace';
     ctx.fillText(`${numSlices} CHOICES`, centerX, centerY + 13);
-  }, [activeWheelItems, currentRotation, fatigueStatuses]);
+  }, [activeWheelItems, currentRotation, fatigueStatuses, colorScheme]);
 
   // Spin calculation and animation
   const spinWheel = useCallback(() => {
@@ -321,7 +332,7 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
           particleCount: 60,
           spread: 70,
           origin: { y: 0.6 },
-          colors: ['#C5A66A', '#F5F0E6', '#A8B5A0', '#183D2B'],
+          colors: ['#0a0a0a', '#525252', '#a3a3a3', '#f5f5f5'],
         });
 
         // Trigger fun fact pop-up for Brianna!
@@ -566,13 +577,9 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
             </div>
 
             <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border border-neutral-700"
-              style={{ backgroundColor: `${selectedResult.color}25` }}
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border border-neutral-700 bg-neutral-800"
             >
-              <div
-                className="w-5 h-5 rounded-full"
-                style={{ backgroundColor: selectedResult.color }}
-              />
+              <div className="w-5 h-5 rounded-full bg-neutral-400" />
             </div>
           </div>
 
