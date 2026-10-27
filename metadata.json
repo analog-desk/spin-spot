@@ -1,0 +1,8 @@
+{
+  "name": "Brianna's Choice ❤️",
+  "description": "Smart meal decision wheel for Brianna with fun trivia pop-ups, hierarchical tracking, and 5-day max fatigue cooldowns.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
